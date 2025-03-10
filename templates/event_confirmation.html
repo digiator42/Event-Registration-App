@@ -1,11 +1,8 @@
-{% extends 'base.html' %}
-
-
 {% block content %}
 <h3>{{ event.name }} Confirmation</h3>
 <br>
 <form action="{% url 'event-confirmation' event.id %}" method='POST'>
-<a href="{% url 'event' event.id %}">back</a>
+<a href="{% url 'event' event.id %}" class="spa-link">back</a>
 {% csrf_token %}
 <button type="submit">Confirm</button>
 </form>

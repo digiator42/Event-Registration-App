@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% comment %} {% extends 'base.html' %} {% endcomment %}
 
 
 {% block content %}
@@ -10,6 +10,6 @@
 {% endfor %}
 <br>
 {% if request.user not in event.participants.all %}
-    <a href="{% url 'event-confirmation' event.id %}">Register</a>
+    <a href="{% url 'event-confirmation' event.id %}" class="spa-link">Register</a>
 {% endif %}
 {% endblock %}

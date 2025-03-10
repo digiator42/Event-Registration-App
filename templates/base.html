@@ -3,11 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Base</title>
+    <title>Event Registeration</title>
 </head>
-<body style="background-color: gray; color: aliceblue;">
-    {% block content %}
+<body>
 
-    {% endblock %}
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}" class="spa-link">Home</a></li>
+            <li><a href="{% url 'event' pk='1' %}" class="spa-link">Event</a></li>
+            <li><a href="{% url 'profile' pk='1' %}" class="spa-link">Profile</a></li>
+        </ul>
+    </nav>
+
+    <!-- Content Area -->
+    <div id="content">
+        {% include block_content %}
+    </div>
+
+    <script>
+        document.addEventListener("click", function (event) {
+            let link = event.target.closest("a");
+            if (!link) return;
+            console.log(link);
+            event.preventDefault();
+
+            let url = link.href;
+
+            fetch(url, {
+                headers: { "X-Requested-With": "XMLHttpRequest" }
+            })
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById("content").innerHTML = html;
+                history.pushState(null, "", url);
+            })
+            .catch(error => console.error("Error loading page:", error));
+        });
+
+        document.addEventListener("submit", function (event) {
+            let form = event.target.closest("form");
+            if (!form) return;
+
+            event.preventDefault();
+
+            let url = form.action;
+            let formData = new FormData(form);
+
+            fetch(url, {
+                method: "POST",
+                body: formData,
+                headers: { "X-Requested-With": "XMLHttpRequest" }
+            })
+            .then(response => response.text())
+            .then(data => {
+                try {
+                    let data = JSON.parse(data);
+                    document.getElementById("content").innerHTML = data.content;
+                    history.pushState(null, "", url);
+                } catch (error) {
+                    document.getElementById("content").innerHTML = data;
+                    history.pushState(null, "", url);
+                }
+            })
+            .catch(error => console.error("Error submitting form:", error));
+        });
+
+        window.onpopstate = function () {
+            fetch(window.location.pathname, {
+                headers: { "X-Requested-With": "XMLHttpRequest" }
+            }).then(response => response.text())
+            .then(html => document.getElementById("content").innerHTML = html)
+            .catch(error => console.error("Error loading page:", error));
+        };
+
+    </script>
+
 </body>
 </html>

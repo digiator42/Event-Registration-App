@@ -1,18 +1,16 @@
-{% extends 'base.html' %}
-
 {% block content %}
     <h1>Home</h1>
 
     <h3>Users</h3>
     {% for user in users %}
-        <a href="{% url 'profile' user.id %}">{{ user.participant.username }}</a>
+        <a href="{% url 'profile' user.id %}" class="spa-link">{{ user.participant.username }}</a>
     {% endfor %}
     <br>
     <br>
     <h3>Events</h3>
     <div style="display: flex; flex-direction: column">
         {% for event in events %}
-            <a href="{% url 'event' event.id %}">{{ event.name }}</a>
+            <a href="{% url 'event' event.id %}" class="spa-link">{{ event.name }}</a>
         {% endfor %}
     </div>
 {% endblock %}
