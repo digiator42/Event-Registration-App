@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h3>{{ event.name }}</h3>
+<div>{{ event.description }}</div>
+<br>
+{% for participant in event.participants.all %}
+    <div><strong>{{participant.username}}</strong></div>
+{% endfor %}
+<br>
+{% if request.user not in event.participants.all %}
+    <a href="{% url 'event-confirmation' event.id %}">Register</a>
+{% endif %}
+{% endblock %}
