@@ -1,0 +1,13 @@
+    <nav>
+        <ul>
+            {% if request.user.is_authenticated %}
+                <li><a href="{% url 'home' %}" class="spa-link">Home</a></li>
+                <li><a href="{% url 'event' pk='1' %}" class="spa-link">Event</a></li>
+                <li><a href="{% url 'profile' pk='1' %}" class="spa-link">Profile</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                {% comment %} <li><a href="{% url 'login' %}" class="spa-link">Login</a></li>
+                <li><a href="{% url 'register' %}" class="spa-link">Register</a></li> {% endcomment %}
+            {% endif %}
+        </ul>
+    </nav>

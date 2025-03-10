@@ -7,15 +7,6 @@
 </head>
 <body>
 
-    <!-- Navigation -->
-    <nav>
-        <ul>
-            <li><a href="{% url 'home' %}" class="spa-link">Home</a></li>
-            <li><a href="{% url 'event' pk='1' %}" class="spa-link">Event</a></li>
-            <li><a href="{% url 'profile' pk='1' %}" class="spa-link">Profile</a></li>
-        </ul>
-    </nav>
-
     <!-- Content Area -->
     <div id="content">
         {% include block_content %}
@@ -25,7 +16,6 @@
         document.addEventListener("click", function (event) {
             let link = event.target.closest("a");
             if (!link) return;
-            console.log(link);
             event.preventDefault();
 
             let url = link.href;
@@ -36,7 +26,11 @@
             .then(response => response.text())
             .then(html => {
                 document.getElementById("content").innerHTML = html;
-                history.pushState(null, "", url);
+                if (url.includes("/logout")) {
+                        history.replaceState(null, "", "/login");
+                } else {
+                        history.pushState(null, "", url);
+                }
             })
             .catch(error => console.error("Error loading page:", error));
         });
@@ -63,7 +57,12 @@
                     history.pushState(null, "", url);
                 } catch (error) {
                     document.getElementById("content").innerHTML = data;
-                    history.pushState(null, "", url);
+                    console.log(url);
+                    if (url.includes("/login") || url.includes("/logout")) {
+                        history.replaceState(null, "", "/");
+                    } else {
+                        history.pushState(null, "", url);
+                    }
                 }
             })
             .catch(error => console.error("Error submitting form:", error));
