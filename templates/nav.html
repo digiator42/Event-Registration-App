@@ -1,13 +1,13 @@
-    <nav>
-        <ul>
+    <nav class="bg-gray-800 p-4">
+        <ul class="flex space-x-4">
             {% if request.user.is_authenticated %}
-                <li><a href="{% url 'home' %}" class="spa-link">Home</a></li>
-                <li><a href="{% url 'event' pk='1' %}" class="spa-link">Event</a></li>
-                <li><a href="{% url 'profile' pk='1' %}" class="spa-link">Profile</a></li>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
+                <li><a href="{% url 'home' %}" class="text-white hover:text-gray-400">Home</a></li>
+                <li><a href="{% url 'event' pk='1' %}" class="text-white hover:text-gray-400">Event</a></li>
+                <li><a href="{% url 'profile' pk='1' %}" class="text-white hover:text-gray-400">Profile</a></li>
+                <li><a href="{% url 'logout' %}" class="text-white hover:text-gray-400">Logout</a></li>
             {% else %}
-                {% comment %} <li><a href="{% url 'login' %}" class="spa-link">Login</a></li>
-                <li><a href="{% url 'register' %}" class="spa-link">Register</a></li> {% endcomment %}
+                {% comment %} <li><a href="{% url 'login' %}" class="text-white hover:text-gray-400">Login</a></li>
+                <li><a href="{% url 'register' %}" class="text-white hover:text-gray-400">Register</a></li> {% endcomment %}
             {% endif %}
         </ul>
     </nav>

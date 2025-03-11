@@ -1,13 +1,51 @@
-
-{% if request.user.is_authenticated %}
-    <h1>Welcome, {{ request.user.username }}</h1>
-    <a href="{% url 'logout' %}">Logout</a>
+{% if page == "register" %}
+    <div class="min-h-screen flex items-center justify-center bg-gray-100">
+        <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+            <h1 class="text-2xl font-bold mb-3 text-center">Register</h1>
+            <form method="POST" action="{% url 'register' %}" class="space-y-4">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-1" for="{{ field.id_for_label }}">
+                            {{ field.label_tag }}
+                        </label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <p class="text-red-500 text-xs italic">{{ field.errors }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Register</button>
+            </form>
+            <p class="mt-4 text-center">
+                Already have an account? 
+                <a href="{% url 'login' %}" class="text-blue-500 hover:underline">Login</a>
+            </p>
+        </div>
+    </div>
 {% else %}
-    <h1>Login</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
-    <a href="{% url 'register' %}">Register</a>
+    <div class="min-h-screen flex items-center justify-center bg-gray-100">
+        <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+            <h1 class="text-2xl font-bold mb-6 text-center">Login</h1>
+            <form method="POST" action="{% url 'login' %}" class="space-y-4">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ field.id_for_label }}">
+                            {{ field.label_tag }}
+                        </label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <p class="text-red-500 text-xs italic">{{ field.errors }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Login</button>
+            </form>
+            <p class="mt-4 text-center">
+                Don't have an account? 
+                <a href="{% url 'register' %}" class="text-blue-500 hover:underline">Register</a>
+            </p>
+        </div>
+    </div>
 {% endif %}

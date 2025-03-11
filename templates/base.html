@@ -3,7 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <title>Event Registeration</title>
+    <style>
+    input {
+        background-color:rgb(134, 130, 130);
+        color: white;
+        padding: 8px 20px;
+        margin: 1px 0;
+        border: none;
+        width: 100%;
+    }
+    </style>
 </head>
 <body>
 
@@ -26,6 +37,7 @@
             .then(response => response.text())
             .then(html => {
                 document.getElementById("content").innerHTML = html;
+                // logout is anker link
                 if (url.includes("/logout")) {
                         history.replaceState(null, "", "/login");
                 } else {
@@ -43,7 +55,7 @@
 
             let url = form.action;
             let formData = new FormData(form);
-
+            console.log(url, formData);
             fetch(url, {
                 method: "POST",
                 body: formData,
@@ -57,8 +69,8 @@
                     history.pushState(null, "", url);
                 } catch (error) {
                     document.getElementById("content").innerHTML = data;
-                    console.log(url);
-                    if (url.includes("/login") || url.includes("/logout")) {
+                    // login is submission form
+                    if (url.includes("/login") || url.includes("/register")) {
                         history.replaceState(null, "", "/");
                     } else {
                         history.pushState(null, "", url);
