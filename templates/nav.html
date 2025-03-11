@@ -3,7 +3,8 @@
             {% if request.user.is_authenticated %}
                 <li><a href="{% url 'home' %}" class="text-white hover:text-gray-400">Home</a></li>
                 <li><a href="{% url 'event' pk='1' %}" class="text-white hover:text-gray-400">Event</a></li>
-                <li><a href="{% url 'profile' pk='1' %}" class="text-white hover:text-gray-400">Profile</a></li>
+                <li><a href="{% url 'account' %}" class="text-white hover:text-gray-400">Account</a></li>
+                <li><a href="{% url 'account' %}" class="text-white hover:text-gray-400">{{request.user.username}}</a></li>
                 <li><a href="{% url 'logout' %}" class="text-white hover:text-gray-400">Logout</a></li>
             {% else %}
                 {% comment %} <li><a href="{% url 'login' %}" class="text-white hover:text-gray-400">Login</a></li>

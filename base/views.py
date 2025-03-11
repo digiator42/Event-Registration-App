@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import User, Submission, Event
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, SubmissionForm
 from django.contrib.auth import login, logout
 from typing import Dict
 from django.contrib.auth.decorators import login_required
@@ -26,8 +26,7 @@ def login_view(request):
             login(request, user)
             return redirect('home')
         else:
-            print('NOT valid -->> ')
-            context = {'form': form, 'page': 'login', 'errors': form.errors}
+            context = {'form': form, 'page': 'login'}
     else:
         form = AuthenticationForm()
         context = {'form': form, 'page': 'login'}
@@ -39,13 +38,11 @@ def register_view(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            print('valid -->> ')
             user = form.save()
             login(request, user)
             return redirect('home')
         else:
-            print('NOT valid -->> ')
-            context = {'form': form, 'page': 'register', 'errors': form.errors}
+            context = {'form': form, 'page': 'register'}
     else:
         form = CustomUserCreationForm()
         context = {'form': form, 'page': 'register'}
@@ -58,16 +55,18 @@ def logout_view(request):
 
 @login_required(login_url='login')
 def home_page(request):
-    users = Submission.objects.all()
+    subs = Submission.objects.exclude(participant__username='admin')
     events = Event.objects.all()
-    context = {'users': users, 'events': events}
+    context = {'subs': subs, 'events': events}
 
     return _spa_content(request, 'home.html', context)
 
 @login_required(login_url='login')
 def event(request, pk):
     event = Event.objects.get(id=pk)
-    context = {'event': event}
+    submitted = Submission.objects.filter(participant=request.user, event=event).exists()
+    print('------>> ', submitted)
+    context = {'event': event, 'submitted': submitted}
     return _spa_content(request, 'event.html', context)
 
 @login_required(login_url='login')
@@ -82,6 +81,30 @@ def event_confirmation(request, pk):
 
 @login_required(login_url='login')
 def profile(request, pk):
+    user = User.objects.get(id=pk)
+    user_events = Event.objects.filter(participants=request.user)
+    context = {'events': user_events, 'user': user}
+    return _spa_content(request, 'profile.html', context)
+
+@login_required(login_url='login')
+def account(request):
     user_events = Event.objects.filter(participants=request.user)
     context = {'events': user_events}
-    return _spa_content(request, 'profile.html', context)
+    return _spa_content(request, 'account.html', context)
+
+@login_required(login_url='login')
+def create_submission(request, pk):
+    event = Event.objects.get(id=pk)
+    if request.method == 'POST':
+        form = SubmissionForm(request.POST)
+        if form.is_valid():
+            submission = form.save(commit=False)
+            submission.participant = request.user
+            submission.event = event
+            submission.save()
+            return redirect('home')
+    else:
+        form = SubmissionForm()
+    
+    context = {'form': form, 'event': event}
+    return _spa_content(request, 'create_submission.html', context)

@@ -4,19 +4,25 @@
     <div class="container mx-auto p-4">
         <h1 class="text-4xl font-bold mb-4">Home</h1>
 
-        <h3 class="text-2xl font-semibold mb-2">Users</h3>
-        <div class="space-y-2">
-            {% for user in users %}
-                <a href="{% url 'profile' user.id %}" class="spa-link text-blue-500 hover:underline">{{ user.participant.username }}</a>
+        <h3 class="text-2xl font-semibold mb-2">Users Submissions</h3>
+        <div class="flex flex-wrap space-x-2">
+            {% for sub in subs %}
+            <div class="bg-gray-200 shadow-md rounded p-4 mb-2 flex items-center hover:bg-gray-300">
+            <img src="{{ sub.participant.picture.url }}" alt="{{ sub.participant.username }}'s picture" class="w-10 h-10 rounded-full mr-2">
+            <a href="{% url 'profile' sub.participant.id %}" class="text-blue-500">{{ sub.participant.username }}</a>
+            </div>
             {% endfor %}
         </div>
         
         <br>
         
         <h3 class="text-2xl font-semibold mb-2">Events</h3>
-        <div class="space-y-2">
+        <div class="flex flex-wrap space-x-2">
             {% for event in events %}
-                <a href="{% url 'event' event.id %}" class="spa-link text-blue-500 hover:underline">{{ event.name }}</a>
+            <div class="bg-gray-100 shadow-md rounded p-4 mb-2 flex flex-col items-start hover:bg-gray-300">
+                <a href="{% url 'event' event.id %}" class="text-blue-500 text-lg font-semibold">{{ event.name }}</a>
+                <p class="text-gray-700">{{ event.description }}</p>
+            </div>
             {% endfor %}
         </div>
     </div>

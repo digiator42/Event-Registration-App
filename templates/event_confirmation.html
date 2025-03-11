@@ -1,12 +1,12 @@
 {% include 'nav.html' %}
 
-
 {% block content %}
-<h3>{{ event.name }} Confirmation</h3>
-<br>
-<form action="{% url 'event-confirmation' event.id %}" method='POST'>
-<a href="{% url 'event' event.id %}" class="spa-link">back</a>
-{% csrf_token %}
-<button type="submit">Confirm</button>
-</form>
+<div class="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg">
+    <h3 class="text-2xl font-semibold mb-4">{{ event.name }} Confirmation</h3>
+    <form action="{% url 'event-confirmation' event.id %}" method='POST' class="space-y-4">
+        <a href="{% url 'event' event.id %}" class="text-blue-500 hover:underline">Back</a>
+        {% csrf_token %}
+        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Confirm</button>
+    </form>
+</div>
 {% endblock %}

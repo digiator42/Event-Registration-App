@@ -35,11 +35,11 @@
                             {{ field.label_tag }}
                         </label>
                         {{ field }}
-                        {% if field.errors %}
-                            <p class="text-red-500 text-xs italic">{{ field.errors }}</p>
-                        {% endif %}
                     </div>
                 {% endfor %}
+                {% if form.non_field_errors %}
+                    <p class="text-red-500 text-xs italic">{{ form.non_field_errors }}</p>
+                {% endif %}
                 <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Login</button>
             </form>
             <p class="mt-4 text-center">
