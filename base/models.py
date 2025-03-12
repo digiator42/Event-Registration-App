@@ -38,5 +38,5 @@ class Submission(models.Model):
     details = models.TextField(null=True, blank=True)
     
     def __str__(self):
-        return str(self.event) + '---' + str(self.participant)
+        return str(self.event) + '|' + str(self.participant)
     
