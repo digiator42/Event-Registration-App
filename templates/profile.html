@@ -9,7 +9,10 @@
         <h2 class="text-xl font-semibold">{{ user.username }}</h2>
         <ul class="mt-4 space-y-2">
             {% for event in request.user.events.all %}
-            <li class="bg-gray-200 p-2 rounded">{{ event.name }}: {{ event.description }}</li>
+            <li class="bg-gray-200 p-2 rounded text-left">
+                {{ event.name }}: 
+                {{ event.description|truncatechars:30 }}
+            </li>
             {% endfor %}
         </ul>
     </div>

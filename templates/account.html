@@ -11,7 +11,7 @@
             <h3 class="text-xl font-semibold text-left">Events</h3>
             {% for event in events %}
             <li class="bg-gray-200 p-2 rounded">
-            <a href="{% url 'event' event.id %}" class="text-blue-500">{{ event.name }}</a>: {{ event.description }}
+            <a href="{% url 'event' event.id %}" class="text-blue-500">{{ event.name }}</a>: {{ event.description|truncatechars:30 }}
             </li>
             {% endfor %}
         </ul>
@@ -19,7 +19,7 @@
             <h3 class="text-xl font-semibold text-left">Submissions</h3>
             {% for sub in user.submissions.all %}
             <li class="bg-gray-200 p-2 rounded text-left">
-            <a href="{% url 'update-submission' sub.id %}" class="text-blue-500">{{ sub.event.name }}</a>: {{ sub.details }}
+            <a href="{% url 'update-submission' sub.id %}" class="text-blue-500">{{ sub.event.name }}</a>: {{ sub.details|truncatechars:30 }}
             </li>
             {% endfor %}
         </ul>

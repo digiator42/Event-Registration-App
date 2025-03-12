@@ -1,8 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+import uuid
 
 # Create your models here.
 class User(AbstractUser):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True, editable=False)
     username = models.CharField(max_length=100, unique=True, null=True)
     name = models.CharField(max_length=100, null=True)
     email = models.EmailField(unique=True, blank=True)
@@ -15,6 +17,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['username']
     
 class Event(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True, editable=False)
     name = models.CharField(max_length=200)
     participants = models.ManyToManyField(User, blank=True, related_name='events')
     description = models.TextField(null=True, blank=True)
@@ -29,6 +32,7 @@ class Event(models.Model):
         return self.name
     
 class Submission(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True, editable=False)
     participant = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='submissions')
     event = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True)
     details = models.TextField(null=True, blank=True)
