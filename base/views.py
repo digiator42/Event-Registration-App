@@ -65,9 +65,14 @@ def home_page(request):
 def event(request, pk):
     event = Event.objects.get(id=pk)
     submitted = Submission.objects.filter(participant=request.user, event=event).exists()
-    print('------>> ', submitted)
     context = {'event': event, 'submitted': submitted}
     return _spa_content(request, 'event.html', context)
+
+@login_required(login_url='login')
+def events(request):
+    events = Event.objects.all()
+    context = {'events': events}
+    return _spa_content(request, 'events.html', context)
 
 @login_required(login_url='login')
 def event_confirmation(request, pk):
@@ -108,3 +113,23 @@ def create_submission(request, pk):
     
     context = {'form': form, 'event': event}
     return _spa_content(request, 'create_submission.html', context)
+
+@login_required(login_url='login')
+def submission_page(request, pk):
+    submission = Submission.objects.get(id=pk)
+    context = {'submission': submission}
+    return _spa_content(request, 'submission.html', context)
+
+@login_required(login_url='login')
+def update_submission(request, pk):
+    submission = Submission.objects.get(id=pk)
+    if request.method == 'POST':
+        form = SubmissionForm(request.POST, instance=submission)
+        if form.is_valid():
+            form.save()
+            return redirect('account')
+    else:
+        form = SubmissionForm(instance=submission)
+    
+    context = {'form': form, 'submission': submission}
+    return _spa_content(request, 'update_submission.html', context)

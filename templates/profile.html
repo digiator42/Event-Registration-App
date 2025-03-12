@@ -8,10 +8,7 @@
         <img src="{{ user.picture.url }}" alt="Profile Picture" class="profile-picture rounded-full mx-auto mb-4 w-32 h-32 object-cover">
         <h2 class="text-xl font-semibold">{{ user.username }}</h2>
         <ul class="mt-4 space-y-2">
-            {% for event in events %}
-            <li class="bg-gray-200 p-2 rounded">{{ event.name }}: {{ event.description }}</li>
-            {% endfor %}
-            {% for event in request.user.events %}
+            {% for event in request.user.events.all %}
             <li class="bg-gray-200 p-2 rounded">{{ event.name }}: {{ event.description }}</li>
             {% endfor %}
         </ul>

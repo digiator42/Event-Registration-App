@@ -1,0 +1,21 @@
+{% include 'nav.html' %}
+
+<div class="flex items-center flex-col justify-center min-h-screen">
+<h1><strong>Create A Submission for {{event.name}}</strong></h1>
+<form method="POST" action="{% url 'update-submission' submission.id %}" class="space-y-4">
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-1" for="{{ field.id_for_label }}">
+                {{ field.label_tag }}
+            </label>
+            {{ field }}
+            {% if field.errors %}
+                <p class="text-red-500 text-xs italic">{{ field.errors }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Update</button>
+</form>
+</div>
+
