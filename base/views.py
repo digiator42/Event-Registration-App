@@ -81,6 +81,9 @@ def event_confirmation(request, pk):
         event.participants.add(request.user)
         return redirect('event', pk=event.id)
     
+    if event.participants.filter(username=request.user.username).exists():
+        return redirect('event', pk=event.id)
+    
     context = {'event': event}
     return _spa_content(request, 'event_confirmation.html', context)
 
@@ -110,6 +113,9 @@ def create_submission(request, pk):
             return redirect('home')
     else:
         form = SubmissionForm()
+        submitted = Submission.objects.filter(participant=request.user, event=event).first()
+        if submitted:
+            return redirect('update-submission', pk=submitted.id)
     
     context = {'form': form, 'event': event}
     return _spa_content(request, 'create_submission.html', context)
