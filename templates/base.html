@@ -27,11 +27,23 @@
         const spinner = document.createElement("div");
         spinner.className = "spinner border-t-4 border-blue-500 border-solid rounded-full w-8 h-8 animate-spin mx-auto my-4";
         
+        function activeNavBar() {
+            let navBar = document.querySelectorAll("nav a");
+            navBar.forEach(link => {
+                if (link.href === window.location.href) {
+                    link.classList.add("text-blue-500");
+                }
+                else {
+                    link.classList.remove("text-blue-500");
+                }
+            })
+        }
+        activeNavBar();
+
         document.addEventListener("click", function (event) {
             let link = event.target.closest("a");
             if (!link) return;
             event.preventDefault();
-            
             let url = link.href;
             fetch(url, {
                 headers: { "X-Requested-With": "XMLHttpRequest" }
@@ -45,6 +57,7 @@
                 } else {
                         history.pushState(null, "", url);
                 }
+                activeNavBar();
             })
             .catch(error => console.error("Error loading page:", error));
         });
@@ -57,7 +70,6 @@
 
             let url = form.action;
             let formData = new FormData(form);
-            console.log(url, formData);
 
             form.appendChild(spinner);
 
@@ -73,14 +85,16 @@
                 let data = JSON.parse(data);
                 document.getElementById("content").innerHTML = data.content;
                 history.pushState(null, "", url);
+                activeNavBar();
             } catch (error) {
                 document.getElementById("content").innerHTML = data;
                 // login is submission form
                 if (url.includes("/login") || url.includes("/register")) {
-                history.replaceState(null, "", "/");
+                    history.replaceState(null, "", "/");
                 } else {
-                history.pushState(null, "", url);
+                    history.pushState(null, "", url);
                 }
+                activeNavBar();
             }
             })
             .catch(error => {
@@ -89,11 +103,13 @@
         });
 
         window.onpopstate = function () {
-            
             fetch(window.location.pathname, {
                 headers: { "X-Requested-With": "XMLHttpRequest" }
             }).then(response => response.text())
-            .then(html => document.getElementById("content").innerHTML = html)
+            .then(html => {
+                document.getElementById("content").innerHTML = html;
+                activeNavBar();
+            })
             .catch(error => console.error("Error loading page:", error));
         };
 
