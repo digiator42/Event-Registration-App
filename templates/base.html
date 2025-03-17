@@ -46,7 +46,7 @@
             event.preventDefault();
             let url = link.href;
             fetch(url, {
-                headers: { "X-Requested-With": "XMLHttpRequest" }
+                headers: { "X-Requested-With": "Fetch" }
             })
             .then(response => response.text())
             .then(html => {
@@ -76,7 +76,7 @@
             fetch(url, {
                 method: "POST",
                 body: formData,
-                headers: { "X-Requested-With": "XMLHttpRequest" }
+                headers: { "X-Requested-With": "Fetch" }
             })
             .then(response => response.text())
             .then(data => {
@@ -104,7 +104,7 @@
 
         window.onpopstate = function () {
             fetch(window.location.pathname, {
-                headers: { "X-Requested-With": "XMLHttpRequest" }
+                headers: { "X-Requested-With": "Fetch" }
             }).then(response => response.text())
             .then(html => {
                 document.getElementById("content").innerHTML = html;

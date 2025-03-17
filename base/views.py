@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def _spa_content(request, template: str, context: Dict):
-    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+    if request.headers.get('X-Requested-With') == 'Fetch':
         return render(request, template, context)
 
     context['block_content'] = template
